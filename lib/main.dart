@@ -225,7 +225,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 direction: Axis.horizontal,
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Text('Dice!')]),
+                children: const [Text('Dice')]),
             Row(
               children: [
                 Expanded(

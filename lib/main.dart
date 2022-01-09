@@ -377,6 +377,40 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
   }
 
+  SizedBox _getD4result(int pips) {
+    assert(pips > 0 && pips < 5);
+    switch (pips) {
+      case 1:
+        return SizedBox(
+            height: 24,
+            width: 24,
+            child: Image(
+                image: const AssetImage('assets/icons/d4one.png'),
+                color: Theme.of(context).colorScheme.onSurface));
+      case 2:
+        return SizedBox(
+            height: 24,
+            width: 24,
+            child: Image(
+                image: const AssetImage('assets/icons/d4two.png'),
+                color: Theme.of(context).colorScheme.onSurface));
+      case 3:
+        return SizedBox(
+            height: 24,
+            width: 24,
+            child: Image(
+                image: const AssetImage('assets/icons/d4three.png'),
+                color: Theme.of(context).colorScheme.onSurface));
+      default:
+        return SizedBox(
+            height: 24,
+            width: 24,
+            child: Image(
+                image: const AssetImage('assets/icons/d4four.png'),
+                color: Theme.of(context).colorScheme.onSurface));
+    }
+  }
+
   SizedBox _getD6result(int pips) {
     assert(pips > 0 && pips < 7);
     switch (pips) {
@@ -471,19 +505,23 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       }
     }
     rollResult = Dnd5eRuleSet().roll(dicePool);
-    if (_selectedDie == DndDice.d6) {
+    if (_selectedDie == DndDice.d6 || _selectedDie == DndDice.d4) {
       String mod = '';
       if (modifier < 0) {
         mod = '$modifier';
       } else if (modifier > 0) {
         mod = '+$modifier';
       }
-
       var parts = <Widget>[];
       parts.add(Text('Sum: ${rollResult.result} / Detail: '));
       for (var i = 0; i < rollResult.rolls.length; i++) {
         if (i > 0) parts.add(const SizedBox(width: 4));
-        parts.add(_getD6result(rollResult.rolls[i]));
+        if (_selectedDie == DndDice.d4) {
+          parts.add(_getD4result(rollResult.rolls[i]));
+        }
+        if (_selectedDie == DndDice.d6) {
+          parts.add(_getD6result(rollResult.rolls[i]));
+        }
       }
       parts.add(const SizedBox(width: 4));
       parts.add(Text(mod));

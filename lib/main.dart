@@ -73,8 +73,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           title: Text(widget.title),
         );
 
-  get _body => ListView.builder(
-      itemCount: _list.length, itemBuilder: (context, index) => _list[index]);
+  get _body => SingleChildScrollView(
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: _list.length,
+            itemBuilder: (context, index) => _list[index]),
+      );
 
   get _fab => _showBottomSheet
       ? null
@@ -405,7 +409,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       }
     }
     rollResult = Dnd5eRuleSet().roll(dicePool);
-    if (_selectedDie != null && _selectedDie != DndDice.d100) {
+    if (_selectedDie != null) {
       String mod = '';
       if (modifier < 0) {
         mod = '$modifier';
@@ -422,7 +426,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ));
       for (var i = 0; i < rollResult.rolls.length; i++) {
         if (i > 0) parts.add(const SizedBox(width: 4));
-        _getDieIcon(_selectedDie!, rollResult.rolls[i]);
+        if (_selectedDie == DndDice.d100) {
+          if (rollResult.rolls[i] == 100) {
+            parts.add(_getDieIcon(DndDice.d10, 10));
+            parts.add(_getDieIcon(DndDice.d100, 10));
+          } else if (rollResult.rolls[i] > 10) {
+            Iterable<int> digits = digitsOf(rollResult.rolls[i]);
+            parts.add(_getDieIcon(DndDice.d100, digits.first));
+            parts.add(_getDieIcon(DndDice.d10, digits.last));
+          } else if (rollResult.rolls[i] == 10) {
+            parts.add(_getDieIcon(DndDice.d100, 10));
+            parts.add(_getDieIcon(DndDice.d10, 10));
+          } else {
+            parts.add(_getDieIcon(DndDice.d100, 10));
+            parts.add(_getDieIcon(DndDice.d10, rollResult.rolls[i]));
+          }
+        } else {
+          parts.add(_getDieIcon(_selectedDie!, rollResult.rolls[i]));
+        }
       }
       parts.add(const SizedBox(width: 4));
       parts.add(Text(
@@ -446,11 +467,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   SizedBox _getDieIcon(DndDice dieType, int rawRollResult) => SizedBox(
-        height: 48,
-        width: 48,
-        child: Image(
-            image: AssetImage('assets/icons/${dieToString(dieType)}${rawRollResult.toWord()}.png'),
-            color: Theme.of(context).colorScheme.onSurface));
+      height: 48,
+      width: 48,
+      child: Image(
+          image: AssetImage(
+              'assets/icons/${dieToString(dieType)}${rawRollResult.toWord()}.png'),
+          color: Theme.of(context).colorScheme.onSurface));
 }
 
 enum DndDice { d4, d6, d8, d10, d12, d20, d100 }
@@ -458,21 +480,20 @@ enum DndDice { d4, d6, d8, d10, d12, d20, d100 }
 String dieToString(DndDice dieType) {
   switch (dieType) {
     case DndDice.d4:
-  return 'd4';
-  case DndDice.d6:
-  return 'd6';
-  case DndDice.d8:
-  return 'd8';
-  case DndDice.d10:
-  return 'd10';
-  case DndDice.d12:
-  return 'd12';
-  case DndDice.d20:
-  return 'd20';
-  case DndDice.d100:
-  return 'd100';
+      return 'd4';
+    case DndDice.d6:
+      return 'd6';
+    case DndDice.d8:
+      return 'd8';
+    case DndDice.d10:
+      return 'd10';
+    case DndDice.d12:
+      return 'd12';
+    case DndDice.d20:
+      return 'd20';
+    case DndDice.d100:
+      return 'd100';
     default:
       return 'the die type is not compatible';
   }
 }
-

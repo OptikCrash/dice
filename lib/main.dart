@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dice/extensions/numbers.dart';
 import 'package:dice/widgets/counter_field.dart';
 import 'package:dice_tower/dice_tower.dart';
 import 'package:flutter/cupertino.dart';
@@ -336,14 +337,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       );
 
   _setDiceText(DndDice dieType) {
+    _selectedDie = dieType;
     var txt = "";
     if (_diceCountController.text.isNotEmpty) {
       var count = int.tryParse(_diceCountController.text);
       if (count != null && count != 0) {
-        txt = _diceCountController.text + ' ' + _getDieString(dieType);
+        txt = _diceCountController.text + ' ' + dieToString(dieType);
       }
     } else {
-      txt = _getDieString(dieType);
+      txt = dieToString(dieType);
     }
     if (_modifierController.text.isNotEmpty) {
       var mod = int.tryParse(_modifierController.text);
@@ -357,482 +359,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     setState(() => _diceStringController.text = txt);
   }
 
-  String _getDieString(DndDice dieType) {
-    _selectedDie = dieType;
-    switch (dieType) {
-      case DndDice.d4:
-        return "d4";
-      case DndDice.d6:
-        return "d6";
-      case DndDice.d8:
-        return "d8";
-      case DndDice.d10:
-        return "d10";
-      case DndDice.d12:
-        return "d12";
-      case DndDice.d20:
-        return "d20";
-      case DndDice.d100:
-        return "d100";
-    }
-  }
-
-  SizedBox _getD4result(int pips) {
-    assert(pips > 0 && pips < 5);
-    switch (pips) {
-      case 1:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d4one.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 2:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d4two.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 3:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d4three.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      default:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d4four.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-    }
-  }
-
-  SizedBox _getD6result(int pips) {
-    assert(pips > 0 && pips < 7);
-    switch (pips) {
-      case 1:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d6one.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 2:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d6two.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 3:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d6three.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 4:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d6four.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 5:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d6five.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      default:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d6six.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-    }
-  }
-
-  SizedBox _getD8result(int pips) {
-    assert(pips > 0 && pips < 9);
-    switch (pips) {
-      case 1:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d8one.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 2:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d8two.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 3:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d8three.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 4:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d8four.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 5:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d8five.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 6:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d8six.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 7:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d8seven.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      default:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d8eight.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-    }
-  }
-
-  SizedBox _getD10result(int pips) {
-    assert(pips > 0 && pips < 11);
-    switch (pips) {
-      case 1:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10one.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 2:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10two.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 3:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10three.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 4:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10four.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 5:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10five.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 6:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10six.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 7:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10seven.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 8:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10eight.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 9:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10nine.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      default:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d10ten.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-    }
-  }
-
-  SizedBox _getD12result(int pips) {
-    assert(pips > 0 && pips < 13);
-    switch (pips) {
-      case 1:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12one.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 2:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12two.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 3:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12three.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 4:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12four.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 5:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12five.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 6:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12six.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 7:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12seven.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 8:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12eight.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 9:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12nine.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 10:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12ten.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 11:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12eleven.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      default:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12twelve.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-    }
-  }
-
-  SizedBox _getD20result(int pips) {
-    assert(pips > 0 && pips < 21);
-    switch (pips) {
-      case 1:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20one.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 2:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20two.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 3:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20three.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 4:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20four.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 5:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20five.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 6:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20six.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 7:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20seven.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 8:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20eight.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 9:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20nine.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 10:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20ten.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 11:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20eleven.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 12:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d12twelve.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 13:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20thirteen.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 14:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20fourteen.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 15:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20fifteen.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 16:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20sixteen.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 17:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20seventeen.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 18:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20eighteen.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      case 19:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20nineteen.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-      default:
-        return SizedBox(
-            height: 48,
-            width: 48,
-            child: Image(
-                image: const AssetImage('assets/icons/d20twenty.png'),
-                color: Theme.of(context).colorScheme.onSurface));
-    }
-  }
-
   Widget? _rollTheDice({bool? advantage}) {
     if (_selectedDie == null) return null;
     int modifier = int.tryParse(_modifierController.text) ?? 0;
@@ -842,7 +368,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     RollResult rollResult;
     switch (_selectedDie) {
       case DndDice.d4:
-        die = Dice(6, modifier: modifier, numberOfDice: numberOfDice);
+        die = Dice(4, modifier: modifier, numberOfDice: numberOfDice);
         break;
       case DndDice.d6:
         die = Dice(6, modifier: modifier, numberOfDice: numberOfDice);
@@ -879,12 +405,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       }
     }
     rollResult = Dnd5eRuleSet().roll(dicePool);
-    if (_selectedDie == DndDice.d4 ||
-        _selectedDie == DndDice.d6 ||
-        _selectedDie == DndDice.d8 ||
-        _selectedDie == DndDice.d10 ||
-        _selectedDie == DndDice.d12 ||
-        _selectedDie == DndDice.d20) {
+    if (_selectedDie != null && _selectedDie != DndDice.d100) {
       String mod = '';
       if (modifier < 0) {
         mod = '$modifier';
@@ -901,24 +422,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ));
       for (var i = 0; i < rollResult.rolls.length; i++) {
         if (i > 0) parts.add(const SizedBox(width: 4));
-        if (_selectedDie == DndDice.d4) {
-          parts.add(_getD4result(rollResult.rolls[i]));
-        }
-        if (_selectedDie == DndDice.d6) {
-          parts.add(_getD6result(rollResult.rolls[i]));
-        }
-        if (_selectedDie == DndDice.d8) {
-          parts.add(_getD8result(rollResult.rolls[i]));
-        }
-        if (_selectedDie == DndDice.d10) {
-          parts.add(_getD10result(rollResult.rolls[i]));
-        }
-        if (_selectedDie == DndDice.d12) {
-          parts.add(_getD12result(rollResult.rolls[i]));
-        }
-        if (_selectedDie == DndDice.d20) {
-          parts.add(_getD20result(rollResult.rolls[i]));
-        }
+        _getDieIcon(_selectedDie!, rollResult.rolls[i]);
       }
       parts.add(const SizedBox(width: 4));
       parts.add(Text(
@@ -940,6 +444,35 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ),
     );
   }
+
+  SizedBox _getDieIcon(DndDice dieType, int rawRollResult) => SizedBox(
+        height: 48,
+        width: 48,
+        child: Image(
+            image: AssetImage('assets/icons/${dieToString(dieType)}${rawRollResult.toWord()}.png'),
+            color: Theme.of(context).colorScheme.onSurface));
 }
 
 enum DndDice { d4, d6, d8, d10, d12, d20, d100 }
+
+String dieToString(DndDice dieType) {
+  switch (dieType) {
+    case DndDice.d4:
+  return 'd4';
+  case DndDice.d6:
+  return 'd6';
+  case DndDice.d8:
+  return 'd8';
+  case DndDice.d10:
+  return 'd10';
+  case DndDice.d12:
+  return 'd12';
+  case DndDice.d20:
+  return 'd20';
+  case DndDice.d100:
+  return 'd100';
+    default:
+      return 'the die type is not compatible';
+  }
+}
+
